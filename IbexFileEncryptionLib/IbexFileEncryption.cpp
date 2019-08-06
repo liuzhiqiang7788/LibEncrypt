@@ -91,10 +91,8 @@ namespace ibex {
 					std::cout << "open dest file failed!" << std::endl;
 					return IBEX_ENCRYPTION_FILE_OPEN_FAILED;
 				}
-				for (int i = 0; i < total_len; i++)
-				{
-					out << encrypt_buffer[i];
-				}
+
+				out.write((const char*)&encrypt_buffer[0], total_len);
 				out.close();
 			}
 			catch (const std::exception& e)
