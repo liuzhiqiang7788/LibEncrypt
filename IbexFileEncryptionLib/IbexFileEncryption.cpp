@@ -58,7 +58,10 @@ namespace ibex {
 				//encrypt process
 				EVP_CIPHER_CTX_init(&ctx);
 
-				ret = EVP_EncryptInit_ex(&ctx, EVP_aes_256_ecb(), NULL, (unsigned char*)m_sKey.c_str(), (unsigned char*)&iv[0]);
+				std::vector<char> CombineKey(m_sKey.size());
+				WideCharToMultiByte(CP_ACP, 0, m_sKey.c_str(), wcslen(m_sKey.c_str()), &CombineKey[0], m_sKey.size(), NULL, NULL);
+
+				ret = EVP_EncryptInit_ex(&ctx, EVP_aes_256_ecb(), NULL, (unsigned char*)&CombineKey[0], (unsigned char*)&iv[0]);
 				if (ret != 1) {
 					std::cout << "EVP_EncryptInit_ex failed" << std::endl;
 					return IBEX_ENCRYPTION_INIT_FAILED;
@@ -141,7 +144,10 @@ namespace ibex {
 
 				EVP_CIPHER_CTX_init(&ctx);
 
-				ret = EVP_DecryptInit_ex(&ctx, EVP_aes_256_ecb(), NULL, (unsigned char*)m_sKey.c_str(), (unsigned char*)&iv[0]);
+				std::vector<char> CombineKey(m_sKey.size());
+				WideCharToMultiByte(CP_ACP, 0, m_sKey.c_str(), wcslen(m_sKey.c_str()), &CombineKey[0], m_sKey.size(), NULL, NULL);
+
+				ret = EVP_DecryptInit_ex(&ctx, EVP_aes_256_ecb(), NULL, (unsigned char*)&CombineKey[0], (unsigned char*)&iv[0]);
 				if (ret != 1) {
 					std::cout << "EVP_DecryptInit_ex failed" << std::endl;
 					return IBEX_ENCRYPTION_INIT_FAILED;
